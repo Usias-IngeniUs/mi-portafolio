@@ -1,1 +1,751 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portafolio Profesional | Servicios TI & Impresión 3D</title>
+  
+  <!-- FontAwesome & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* VARIABLES GLOBALES */
+    :root {
+      --bg-dark: #070913;
+      --card-bg: rgba(15, 23, 42, 0.7);
+      --primary-cyan: #00f0ff;
+      --primary-purple: #7000ff;
+      --primary-pink: #ff007f;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border-glow: rgba(0, 240, 255, 0.3);
+    }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Rajdhani', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* CURSOR PERSONALIZADO */
+    .custom-cursor {
+      width: 10px;
+      height: 10px;
+      background-color: var(--primary-cyan);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, background-color 0.2s;
+    }
+
+    .cursor-follower {
+      width: 36px;
+      height: 36px;
+      border: 2px solid rgba(0, 240, 255, 0.5);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease-out, border-color 0.2s;
+    }
+
+    /* FONDO CANVAS DE PARTÍCULAS */
+    #particles-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* NAVEGACIÓN */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 8%;
+      background: rgba(7, 9, 19, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 2px;
+    }
+
+    .logo span {
+      color: var(--primary-cyan);
+      text-shadow: 0 0 10px var(--primary-cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary-cyan);
+      text-shadow: 0 0 8px var(--primary-cyan);
+    }
+
+    /* HERO SECTION */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 120px 20px 60px;
+    }
+
+    .hero-badge {
+      padding: 6px 16px;
+      border-radius: 20px;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid var(--primary-cyan);
+      color: var(--primary-cyan);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+      margin-bottom: 25px;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+    }
+
+    .hero h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 900;
+      margin-bottom: 20px;
+      line-height: 1.1;
+    }
+
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple), var(--primary-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .typewriter-container {
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+      color: var(--text-muted);
+      height: 40px;
+      margin-bottom: 35px;
+    }
+
+    .typewriter {
+      color: var(--primary-cyan);
+      font-weight: 700;
+      border-right: 2px solid var(--primary-cyan);
+      animation: blink 0.7s infinite;
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+      color: #fff;
+      border: none;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.7);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--primary-cyan);
+      color: var(--primary-cyan);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+    }
+
+    /* SERVICIOS SECTION */
+    .services-section {
+      padding: 100px 8%;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+    }
+
+    .service-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .service-card:hover {
+      border-color: var(--primary-cyan);
+      box-shadow: 0 10px 30px rgba(0, 240, 255, 0.25);
+    }
+
+    .card-img-wrapper {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+    }
+
+    .card-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .service-card:hover .card-img-wrapper img {
+      transform: scale(1.1);
+    }
+
+    .card-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(7, 9, 19, 0.2), var(--card-bg));
+    }
+
+    .card-badge-icon {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 45px;
+      height: 45px;
+      background: rgba(7, 9, 19, 0.8);
+      border: 1px solid var(--primary-cyan);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-cyan);
+      font-size: 1.2rem;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+    }
+
+    .card-body {
+      padding: 25px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      color: #fff;
+    }
+
+    .service-list {
+      list-style: none;
+      margin-bottom: 20px;
+    }
+
+    .service-list li {
+      margin-bottom: 10px;
+      color: var(--text-muted);
+      font-size: 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .service-list li i {
+      color: var(--primary-cyan);
+      margin-top: 4px;
+    }
+
+    /* ESTADÍSTICAS */
+    .stats-section {
+      padding: 60px 8%;
+      background: rgba(15, 23, 42, 0.4);
+      border-y: 1px solid rgba(255, 255, 255, 0.05);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--primary-cyan);
+      text-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    /* CONTACTO */
+    .contact-section {
+      padding: 100px 8%;
+      text-align: center;
+    }
+
+    .contact-cards {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 40px;
+    }
+
+    .contact-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 25px 40px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      transition: all 0.3s;
+    }
+
+    .contact-card i {
+      font-size: 1.8rem;
+      color: var(--primary-cyan);
+    }
+
+    .contact-card:hover {
+      border-color: var(--primary-cyan);
+      transform: translateY(-50px);
+      box-shadow: 0 10px 25px rgba(0, 240, 255, 0.3);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .services-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Elementos del Cursor -->
+  <div class="custom-cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursor-follower"></div>
+
+  <!-- Canvas de Fondo Interactivo -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Navegación -->
+  <nav>
+    <a href="#" class="logo">SOLUCIONES<span>TI</span></a>
+    <ul class="nav-links">
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="inicio">
+    <div class="hero-badge"><i class="fa-solid fa-bolt"></i> INNOVACIÓN Y TECNOLOGÍA</div>
+    <h1>Transformando Ideas en <br><span class="gradient-text">Soluciones Digitales & Físicas</span></h1>
+    <div class="typewriter-container">
+      Especialista en <span class="typewriter" id="typewriter-text"></span>
+    </div>
+    <div class="cta-buttons">
+      <a href="#servicios" class="btn btn-primary">Ver Servicios</a>
+      <a href="#contacto" class="btn btn-secondary">Contactar</a>
+    </div>
+  </section>
+
+  <!-- Sección de Servicios -->
+  <section class="services-section" id="servicios">
+    <div class="section-header">
+      <h2 class="section-title">NUESTROS SERVICIOS</h2>
+      <p class="section-subtitle">Soluciones integrales de alta tecnología adaptadas a tus necesidades</p>
+    </div>
+
+    <div class="services-grid">
+
+      <!-- Tarjeta 1: Desarrollo de Software -->
+      <div class="service-card">
+        <div class="card-img-wrapper">
+          <img src="assets/s1.jpg" alt="Desarrollo de Software">
+          <div class="card-overlay"></div>
+          <div class="card-badge-icon"><i class="fa-solid fa-code"></i></div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Desarrollo de Software</h3>
+          <ul class="service-list">
+            <li><i class="fa-solid fa-check"></i> Desarrollo de Aplicaciones Web personalizadas.</li>
+            <li><i class="fa-solid fa-check"></i> Desarrollo de Aplicaciones de Escritorio robustas.</li>
+            <li><i class="fa-solid fa-check"></i> Sistemas a medida y optimización de software.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tarjeta 2: Redes y Telecomunicaciones -->
+      <div class="service-card">
+        <div class="card-img-wrapper">
+          <img src="assets/s2.jpg" alt="Redes y Telecomunicaciones">
+          <div class="card-overlay"></div>
+          <div class="card-badge-icon"><i class="fa-solid fa-network-wired"></i></div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Redes & Telecomunicaciones</h3>
+          <ul class="service-list">
+            <li><i class="fa-solid fa-check"></i> Ingeniería, diseño e instalación de redes informáticas.</li>
+            <li><i class="fa-solid fa-check"></i> Administración de redes con tecnología certificada.</li>
+            <li><i class="fa-solid fa-check"></i> Telefonía IP y Cableado Estructurado.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tarjeta 3: Soporte Empresarial y Consultoría -->
+      <div class="service-card">
+        <div class="card-img-wrapper">
+          <img src="assets/s3.jpg" alt="Soporte Técnico y Consultoría">
+          <div class="card-overlay"></div>
+          <div class="card-badge-icon"><i class="fa-solid fa-headset"></i></div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Soporte & Consultoría TI</h3>
+          <ul class="service-list">
+            <li><i class="fa-solid fa-check"></i> Soporte Técnico Empresarial integral.</li>
+            <li><i class="fa-solid fa-check"></i> Asistencia y Soporte Técnico remoto 24/7.</li>
+            <li><i class="fa-solid fa-check"></i> Consultoría tecnológica estratégica.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tarjeta 4: Cursos y Robótica -->
+      <div class="service-card">
+        <div class="card-img-wrapper">
+          <img src="assets/s4.jpg" alt="Capacitación y Robótica">
+          <div class="card-overlay"></div>
+          <div class="card-badge-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Capacitación & Robótica</h3>
+          <ul class="service-list">
+            <li><i class="fa-solid fa-check"></i> Cursos de robótica, programación y TICs.</li>
+            <li><i class="fa-solid fa-check"></i> Programación y modelamiento para todas las edades.</li>
+            <li><i class="fa-solid fa-check"></i> Talleres y actualización tecnológica continua.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tarjeta 5: Diseño e Impresión 3D -->
+      <div class="service-card">
+        <div class="card-img-wrapper">
+          <img src="assets/s5.jpg" alt="Diseño e Impresión 3D">
+          <div class="card-overlay"></div>
+          <div class="card-badge-icon"><i class="fa-solid fa-cube"></i></div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Diseño e Impresión 3D</h3>
+          <ul class="service-list">
+            <li><i class="fa-solid fa-check"></i> Modelado e ingeniería de piezas en 3D.</li>
+            <li><i class="fa-solid fa-check"></i> Prototipado rápido de proyectos tecnológicos.</li>
+            <li><i class="fa-solid fa-check"></i> Fabricación digital e impresión a medida.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Sección de Estadísticas -->
+  <section class="stats-section">
+    <div>
+      <div class="stat-number" data-target="100">0</div>
+      <div class="stat-label">% Proyectos Garantizados</div>
+    </div>
+    <div>
+      <div class="stat-number" data-target="5">0</div>
+      <div class="stat-label">Áreas de Especialidad</div>
+    </div>
+    <div>
+      <div class="stat-number" data-target="24">0</div>
+      <div class="stat-label">Soporte Técnico Atento</div>
+    </div>
+  </section>
+
+  <!-- Sección de Contacto -->
+  <section class="contact-section" id="contacto">
+    <h2 class="section-title">¿TIENES UN PROYECTO EN MENTE?</h2>
+    <p class="section-subtitle">Ponte en contacto para hacer realidad tus soluciones tecnológicas</p>
+    
+    <div class="contact-cards">
+      <a href="https://wa.me/" target="_blank" class="contact-card">
+        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+      </a>
+      <a href="mailto:tuemail@ejemplo.com" class="contact-card">
+        <i class="fa-solid fa-envelope"></i> Email
+      </a>
+      <a href="https://linkedin.com" target="_blank" class="contact-card">
+        <i class="fa-brands fa-linkedin"></i> LinkedIn
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Portafolio Tecnológico. Diseñado para GitHub Pages.</p>
+  </footer>
+
+  <!-- SCRIPT INTERACTIVO Y ANIMACIONES -->
+  <script>
+    // Cursor Personalizado
+    const cursor = document.getElementById('cursor');
+    const follower = document.getElementById('cursor-follower');
+
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+      
+      setTimeout(() => {
+        follower.style.left = e.clientX + 'px';
+        follower.style.top = e.clientY + 'px';
+      }, 50);
+    });
+
+    // Efecto Typewriter
+    const words = ["Desarrollo Web & Escritorio", "Redes & Telecomunicaciones", "Diseño e Impresión 3D", "Consultoría TI & Robótica"];
+    let i = 0;
+    let timer;
+
+    function typingEffect() {
+      let word = words[i].split("");
+      var loopTyping = function() {
+        if (word.length > 0) {
+          document.getElementById('typewriter-text').innerHTML += word.shift();
+        } else {
+          setTimeout(deletingEffect, 2000);
+          return false;
+        }
+        timer = setTimeout(loopTyping, 100);
+      };
+      loopTyping();
+    }
+
+    function deletingEffect() {
+      let word = words[i].split("");
+      var loopDeleting = function() {
+        if (word.length > 0) {
+          word.pop();
+          document.getElementById('typewriter-text').innerHTML = word.join("");
+        } else {
+          if (words.length > (i + 1)) {
+            i++;
+          } else {
+            i = 0;
+          }
+          setTimeout(typingEffect, 500);
+          return false;
+        }
+        timer = setTimeout(loopDeleting, 50);
+      };
+      loopDeleting();
+    }
+
+    typingEffect();
+
+    // Fondo Canvas de Partículas
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particlesArray = [];
+    const numberOfParticles = 60;
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 1;
+        this.speedX = (Math.random() - 0.5) * 1.5;
+        this.speedY = (Math.random() - 0.5) * 1.5;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x > canvas.width) this.x = 0;
+        if (this.x < 0) this.x = canvas.width;
+        if (this.y > canvas.height) this.y = 0;
+        if (this.y < 0) this.y = canvas.height;
+      }
+      draw() {
+        ctx.fillStyle = '#00f0ff';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particlesArray = [];
+      for (let i = 0; i < numberOfParticles; i++) {
+        particlesArray.push(new Particle());
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+        particlesArray[i].draw();
+
+        for (let j = i; j < particlesArray.length; j++) {
+          const dx = particlesArray[i].x - particlesArray[j].x;
+          const dy = particlesArray[i].y - particlesArray[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < 120) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(0, 240, 255, ${1 - distance / 120})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+            ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animateParticles);
+    }
+
+    initParticles();
+    animateParticles();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initParticles();
+    });
+
+    // Animación de Contadores
+    const stats = document.querySelectorAll('.stat-number');
+    let hasRun = false;
+
+    window.addEventListener('scroll', () => {
+      const sectionPos = document.querySelector('.stats-section').getBoundingClientRect().top;
+      const screenPos = window.innerHeight / 1.3;
+
+      if (sectionPos < screenPos && !hasRun) {
+        hasRun = true;
+        stats.forEach(stat => {
+          const target = +stat.getAttribute('data-target');
+          let count = 0;
+          const updateCount = () => {
+            const increment = target / 50;
+            if (count < target) {
+              count += increment;
+              stat.innerText = Math.ceil(count) + '+';
+              setTimeout(updateCount, 30);
+            } else {
+              stat.innerText = target + '+';
+            }
+          };
+          updateCount();
+        });
+      }
+    });
+  </script>
+</body>
+</html>
