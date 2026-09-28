@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portafolio Profesional | Servicios TI & Impresión 3D</title>
+  <title>Portafolio Tecnológico | Servicios TI & Impresión 3D</title>
   
-  <!-- FontAwesome & Google Fonts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
   
@@ -13,13 +12,14 @@
     /* VARIABLES GLOBALES */
     :root {
       --bg-dark: #070913;
-      --card-bg: rgba(15, 23, 42, 0.7);
+      --card-bg: rgba(15, 23, 42, 0.75);
       --primary-cyan: #00f0ff;
-      --primary-purple: #7000ff;
+      --primary-emerald: #00ffa3;
+      --primary-purple: #9d00ff;
+      --primary-orange: #ff7700;
       --primary-pink: #ff007f;
       --text-main: #f1f5f9;
       --text-muted: #94a3b8;
-      --border-glow: rgba(0, 240, 255, 0.3);
     }
 
     * {
@@ -51,8 +51,8 @@
     }
 
     .cursor-follower {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border: 2px solid rgba(0, 240, 255, 0.5);
       border-radius: 50%;
       position: fixed;
@@ -192,8 +192,6 @@
       text-decoration: none;
       cursor: pointer;
       transition: all 0.3s;
-      position: relative;
-      overflow: hidden;
     }
 
     .btn-primary {
@@ -220,14 +218,14 @@
       box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
     }
 
-    /* SERVICIOS SECTION */
+    /* SECCIÓN DE SERVICIOS CON EFECTO 3D LAYERED POP-OUT */
     .services-section {
       padding: 100px 8%;
     }
 
     .section-header {
       text-align: center;
-      margin-bottom: 60px;
+      margin-bottom: 70px;
     }
 
     .section-title {
@@ -245,76 +243,75 @@
     .services-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 30px;
+      gap: 45px;
     }
 
-    .service-card {
+    /* ESTILO TARJETA 3D POP-OUT & GLOW */
+    .card-layered {
+      position: relative;
       background: var(--card-bg);
-      border-radius: 16px;
+      border-radius: 20px;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      overflow: hidden;
-      backdrop-filter: blur(10px);
-      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s, box-shadow 0.3s;
-      display: flex;
-      flex-direction: column;
+      backdrop-filter: blur(16px);
+      padding: 25px;
+      perspective: 1000px;
+      transform-style: preserve-3d;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.4s, box-shadow 0.4s;
+    }
+
+    /* RESPLANDOR AMBIENTAL (GLOW NEÓN) */
+    .card-glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 0.5s ease;
+      filter: blur(25px);
+    }
+
+    /* CONTENEDOR POP-OUT DE IMAGEN */
+    .img-popout-container {
       position: relative;
-    }
-
-    .service-card:hover {
-      border-color: var(--primary-cyan);
-      box-shadow: 0 10px 30px rgba(0, 240, 255, 0.25);
-    }
-
-    .card-img-wrapper {
-      position: relative;
-      height: 200px;
+      height: 210px;
+      width: 100%;
+      border-radius: 14px;
       overflow: hidden;
+      margin-bottom: 20px;
+      transform-style: preserve-3d;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
 
-    .card-img-wrapper img {
+    .img-popout-container img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       transition: transform 0.5s ease;
     }
 
-    .service-card:hover .card-img-wrapper img {
-      transform: scale(1.1);
-    }
-
-    .card-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to bottom, rgba(7, 9, 19, 0.2), var(--card-bg));
-    }
-
     .card-badge-icon {
       position: absolute;
       top: 15px;
       right: 15px;
-      width: 45px;
-      height: 45px;
-      background: rgba(7, 9, 19, 0.8);
-      border: 1px solid var(--primary-cyan);
+      width: 42px;
+      height: 42px;
+      background: rgba(7, 9, 19, 0.85);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--primary-cyan);
       font-size: 1.2rem;
       backdrop-filter: blur(5px);
-      box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+      z-index: 2;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     }
 
     .card-body {
-      padding: 25px;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      transform: translateZ(20px);
+      transition: transform 0.4s ease;
     }
 
     .card-title {
@@ -326,7 +323,6 @@
 
     .service-list {
       list-style: none;
-      margin-bottom: 20px;
     }
 
     .service-list li {
@@ -339,15 +335,75 @@
     }
 
     .service-list li i {
-      color: var(--primary-cyan);
       margin-top: 4px;
+    }
+
+    /* EFECTOS HOVER INDIVIDUALES POR ACCENTO */
+
+    /* Card 1: Desarrollo - Cyan */
+    .card-cyan .card-badge-icon, .card-cyan .service-list li i { color: var(--primary-cyan); }
+    .card-cyan:hover {
+      border-color: var(--primary-cyan);
+      box-shadow: 0 15px 35px rgba(0, 240, 255, 0.25);
+    }
+    .card-cyan .card-glow { background: var(--primary-cyan); }
+
+    /* Card 2: Redes - Esmeralda */
+    .card-emerald .card-badge-icon, .card-emerald .service-list li i { color: var(--primary-emerald); }
+    .card-emerald:hover {
+      border-color: var(--primary-emerald);
+      box-shadow: 0 15px 35px rgba(0, 255, 163, 0.25);
+    }
+    .card-emerald .card-glow { background: var(--primary-emerald); }
+
+    /* Card 3: Soporte - Púrpura */
+    .card-purple .card-badge-icon, .card-purple .service-list li i { color: var(--primary-purple); }
+    .card-purple:hover {
+      border-color: var(--primary-purple);
+      box-shadow: 0 15px 35px rgba(157, 0, 255, 0.25);
+    }
+    .card-purple .card-glow { background: var(--primary-purple); }
+
+    /* Card 4: Robótica - Naranja */
+    .card-orange .card-badge-icon, .card-orange .service-list li i { color: var(--primary-orange); }
+    .card-orange:hover {
+      border-color: var(--primary-orange);
+      box-shadow: 0 15px 35px rgba(255, 119, 0, 0.25);
+    }
+    .card-orange .card-glow { background: var(--primary-orange); }
+
+    /* Card 5: Impresión 3D - Magenta */
+    .card-pink .card-badge-icon, .card-pink .service-list li i { color: var(--primary-pink); }
+    .card-pink:hover {
+      border-color: var(--primary-pink);
+      box-shadow: 0 15px 35px rgba(255, 0, 127, 0.25);
+    }
+    .card-pink .card-glow { background: var(--primary-pink); }
+
+    /* ACCIÓN DE POP-OUT EN HOVER (ESTILO VIDEO) */
+    .card-layered:hover {
+      transform: translateY(-8px) scale(1.02);
+    }
+
+    .card-layered:hover .card-glow {
+      opacity: 0.35;
+    }
+
+    .card-layered:hover .img-popout-container {
+      transform: translateZ(40px) translateY(-10px) scale(1.04);
+      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .card-layered:hover .img-popout-container img {
+      transform: scale(1.1);
     }
 
     /* ESTADÍSTICAS */
     .stats-section {
       padding: 60px 8%;
       background: rgba(15, 23, 42, 0.4);
-      border-y: 1px solid rgba(255, 255, 255, 0.05);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 30px;
@@ -385,8 +441,8 @@
     .contact-card {
       background: var(--card-bg);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 25px 40px;
-      border-radius: 12px;
+      padding: 22px 35px;
+      border-radius: 14px;
       text-decoration: none;
       color: #fff;
       display: flex;
@@ -404,7 +460,7 @@
 
     .contact-card:hover {
       border-color: var(--primary-cyan);
-      transform: translateY(-50px);
+      transform: translateY(-5px);
       box-shadow: 0 10px 25px rgba(0, 240, 255, 0.3);
     }
 
@@ -424,14 +480,11 @@
 </head>
 <body>
 
-  <!-- Elementos del Cursor -->
   <div class="custom-cursor" id="cursor"></div>
   <div class="cursor-follower" id="cursor-follower"></div>
 
-  <!-- Canvas de Fondo Interactivo -->
   <canvas id="particles-canvas"></canvas>
 
-  <!-- Navegación -->
   <nav>
     <a href="#" class="logo">SOLUCIONES<span>TI</span></a>
     <ul class="nav-links">
@@ -441,7 +494,6 @@
     </ul>
   </nav>
 
-  <!-- Hero Section -->
   <section class="hero" id="inicio">
     <div class="hero-badge"><i class="fa-solid fa-bolt"></i> INNOVACIÓN Y TECNOLOGÍA</div>
     <h1>Transformando Ideas en <br><span class="gradient-text">Soluciones Digitales & Físicas</span></h1>
@@ -454,96 +506,90 @@
     </div>
   </section>
 
-  <!-- Sección de Servicios -->
   <section class="services-section" id="servicios">
     <div class="section-header">
       <h2 class="section-title">NUESTROS SERVICIOS</h2>
-      <p class="section-subtitle">Soluciones integrales de alta tecnología adaptadas a tus necesidades</p>
+      <p class="section-subtitle">Soluciones integrales diseñadas con tecnología de vanguardia</p>
     </div>
 
     <div class="services-grid">
 
-      <!-- Tarjeta 1: Desarrollo de Software -->
-      <div class="service-card">
-        <div class="card-img-wrapper">
+      <div class="card-layered card-cyan">
+        <div class="card-glow"></div>
+        <div class="img-popout-container">
           <img src="assets/s1.jpg" alt="Desarrollo de Software">
-          <div class="card-overlay"></div>
           <div class="card-badge-icon"><i class="fa-solid fa-code"></i></div>
         </div>
         <div class="card-body">
           <h3 class="card-title">Desarrollo de Software</h3>
           <ul class="service-list">
             <li><i class="fa-solid fa-check"></i> Desarrollo de Aplicaciones Web personalizadas.</li>
-            <li><i class="fa-solid fa-check"></i> Desarrollo de Aplicaciones de Escritorio robustas.</li>
+            <li><i class="fa-solid fa-check"></i> Desarrollo de Aplicaciones de Escritorio.</li>
             <li><i class="fa-solid fa-check"></i> Sistemas a medida y optimización de software.</li>
           </ul>
         </div>
       </div>
 
-      <!-- Tarjeta 2: Redes y Telecomunicaciones -->
-      <div class="service-card">
-        <div class="card-img-wrapper">
+      <div class="card-layered card-emerald">
+        <div class="card-glow"></div>
+        <div class="img-popout-container">
           <img src="assets/s2.jpg" alt="Redes y Telecomunicaciones">
-          <div class="card-overlay"></div>
           <div class="card-badge-icon"><i class="fa-solid fa-network-wired"></i></div>
         </div>
         <div class="card-body">
           <h3 class="card-title">Redes & Telecomunicaciones</h3>
           <ul class="service-list">
-            <li><i class="fa-solid fa-check"></i> Ingeniería, diseño e instalación de redes informáticas.</li>
-            <li><i class="fa-solid fa-check"></i> Administración de redes con tecnología certificada.</li>
+            <li><i class="fa-solid fa-check"></i> Ingeniería, diseño e instalación de redes.</li>
+            <li><i class="fa-solid fa-check"></i> Administración con tecnología certificada.</li>
             <li><i class="fa-solid fa-check"></i> Telefonía IP y Cableado Estructurado.</li>
           </ul>
         </div>
       </div>
 
-      <!-- Tarjeta 3: Soporte Empresarial y Consultoría -->
-      <div class="service-card">
-        <div class="card-img-wrapper">
+      <div class="card-layered card-purple">
+        <div class="card-glow"></div>
+        <div class="img-popout-container">
           <img src="assets/s3.jpg" alt="Soporte Técnico y Consultoría">
-          <div class="card-overlay"></div>
           <div class="card-badge-icon"><i class="fa-solid fa-headset"></i></div>
         </div>
         <div class="card-body">
           <h3 class="card-title">Soporte & Consultoría TI</h3>
           <ul class="service-list">
             <li><i class="fa-solid fa-check"></i> Soporte Técnico Empresarial integral.</li>
-            <li><i class="fa-solid fa-check"></i> Asistencia y Soporte Técnico remoto 24/7.</li>
+            <li><i class="fa-solid fa-check"></i> Asistencia y Soporte Técnico remoto.</li>
             <li><i class="fa-solid fa-check"></i> Consultoría tecnológica estratégica.</li>
           </ul>
         </div>
       </div>
 
-      <!-- Tarjeta 4: Cursos y Robótica -->
-      <div class="service-card">
-        <div class="card-img-wrapper">
+      <div class="card-layered card-orange">
+        <div class="card-glow"></div>
+        <div class="img-popout-container">
           <img src="assets/s4.jpg" alt="Capacitación y Robótica">
-          <div class="card-overlay"></div>
           <div class="card-badge-icon"><i class="fa-solid fa-graduation-cap"></i></div>
         </div>
         <div class="card-body">
           <h3 class="card-title">Capacitación & Robótica</h3>
           <ul class="service-list">
             <li><i class="fa-solid fa-check"></i> Cursos de robótica, programación y TICs.</li>
-            <li><i class="fa-solid fa-check"></i> Programación y modelamiento para todas las edades.</li>
-            <li><i class="fa-solid fa-check"></i> Talleres y actualización tecnológica continua.</li>
+            <li><i class="fa-solid fa-check"></i> Programación para todas las edades.</li>
+            <li><i class="fa-solid fa-check"></i> Talleres y capacitación tecnológica.</li>
           </ul>
         </div>
       </div>
 
-      <!-- Tarjeta 5: Diseño e Impresión 3D -->
-      <div class="service-card">
-        <div class="card-img-wrapper">
+      <div class="card-layered card-pink">
+        <div class="card-glow"></div>
+        <div class="img-popout-container">
           <img src="assets/s5.jpg" alt="Diseño e Impresión 3D">
-          <div class="card-overlay"></div>
           <div class="card-badge-icon"><i class="fa-solid fa-cube"></i></div>
         </div>
         <div class="card-body">
           <h3 class="card-title">Diseño e Impresión 3D</h3>
           <ul class="service-list">
             <li><i class="fa-solid fa-check"></i> Modelado e ingeniería de piezas en 3D.</li>
-            <li><i class="fa-solid fa-check"></i> Prototipado rápido de proyectos tecnológicos.</li>
-            <li><i class="fa-solid fa-check"></i> Fabricación digital e impresión a medida.</li>
+            <li><i class="fa-solid fa-check"></i> Prototipado rápido de proyectos.</li>
+            <li><i class="fa-solid fa-check"></i> Fabricación digital a medida.</li>
           </ul>
         </div>
       </div>
@@ -551,7 +597,6 @@
     </div>
   </section>
 
-  <!-- Sección de Estadísticas -->
   <section class="stats-section">
     <div>
       <div class="stat-number" data-target="100">0</div>
@@ -563,11 +608,10 @@
     </div>
     <div>
       <div class="stat-number" data-target="24">0</div>
-      <div class="stat-label">Soporte Técnico Atento</div>
+      <div class="stat-label">Soporte Atento</div>
     </div>
   </section>
 
-  <!-- Sección de Contacto -->
   <section class="contact-section" id="contacto">
     <h2 class="section-title">¿TIENES UN PROYECTO EN MENTE?</h2>
     <p class="section-subtitle">Ponte en contacto para hacer realidad tus soluciones tecnológicas</p>
@@ -589,7 +633,6 @@
     <p>&copy; 2026 Portafolio Tecnológico. Diseñado para GitHub Pages.</p>
   </footer>
 
-  <!-- SCRIPT INTERACTIVO Y ANIMACIONES -->
   <script>
     // Cursor Personalizado
     const cursor = document.getElementById('cursor');
@@ -605,7 +648,7 @@
       }, 50);
     });
 
-    // Efecto Typewriter
+    // Effect Typewriter
     const words = ["Desarrollo Web & Escritorio", "Redes & Telecomunicaciones", "Diseño e Impresión 3D", "Consultoría TI & Robótica"];
     let i = 0;
     let timer;
